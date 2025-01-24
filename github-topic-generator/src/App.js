@@ -1,53 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Application from './application';
+import Navbar from './components/Navbar';
 
 const App = () => {
-  const [readmeContent, setReadmeContent] = useState('Click to fetch README...');
+  const [readmeContent, setReadmeContent] = useState('');
+  const [topics, setTopics] = useState([]);
+
   const [error, setError] = useState(null);
 
-  const fetchReadme = () => {
-    // Get the current tab URL
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  const fetchReadmeAndTopics = async () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const tabUrl = tabs[0].url;
-
+  
       // Extract owner and repo from the GitHub URL
       const matches = tabUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
       if (matches && matches.length >= 3) {
         const owner = matches[1];
         const repo = matches[2];
-
-        // Fetch README from GitHub API
-        fetch(`https://api.github.com/repos/${owner}/${repo}/readme`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.content) {
-              // Decode the Base64 content
-              const decodedContent = atob(data.content);
-              setReadmeContent(decodedContent);
-            } else {
-              setReadmeContent('README not found');
-            }
-          })
-          .catch((err) => {
-            setError('Error fetching README');
-            console.error('Error:', err);
+  
+        try {
+          // Fetch README
+          const readmeResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/readme`);
+          const readmeData = await readmeResponse.json();
+  
+          if (readmeData.content) {
+            const decodedContent = atob(readmeData.content);
+            console.log(decodedContent);
+            setReadmeContent(decodedContent);
+          } else {
+            setReadmeContent('README not found');
+          }
+  
+          // Fetch Topics
+          const topicsResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/topics`, {
+            method: 'GET',
+            headers: {
+              Accept: 'application/vnd.github.mercy-preview+json',
+            },
           });
+  
+          if (!topicsResponse.ok) {
+            throw new Error('Failed to fetch topics');
+          }
+  
+          const topicsData = await topicsResponse.json();
+          if (topicsData.names && topicsData.names.length > 0) {
+            setTopics(topicsData.names);
+            console.log(topicsData.names);
+            
+          }
+        } catch (err) {
+          setError('Error fetching data');
+          console.error('Error:', err);
+        }
       } else {
         setReadmeContent('Invalid GitHub repository URL');
       }
     });
   };
-
+  
   useEffect(() => {
-    fetchReadme();
+    let isMounted = true; 
+    if (isMounted) {
+      fetchReadmeAndTopics();
+    }
+    return () => {
+      isMounted = false; 
+    };
   }, []);
+  
+  
 
   return (
-<div style={{ padding: '20px', borderRadius: '10px' }}>
-<h2 style={{ color: 'blue', fontFamily: 'Arial, sans-serif' }}>SmartGitTagger</h2>
-      <pre>
+<div style={{ borderRadius: '10px' }}>
+  <Header/>
+  <Navbar/>
+      {/* <pre>
         {error ? error : readmeContent}
-      </pre>
+      </pre> */}
     </div>
   );
 };

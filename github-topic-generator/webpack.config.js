@@ -13,7 +13,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js|jsx$/,
+                test: /\.(js|jsx)$/,  // Fixed regex for .js and .jsx files
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -21,6 +21,9 @@ module.exports = {
                         presets: [
                             '@babel/preset-env',
                             ['@babel/preset-react', {"runtime": "automatic"}]
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-private-property-in-object', // Add the missing plugin
                         ],
                     }
                 }
@@ -56,4 +59,8 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
     ],
+    
+    resolve: {
+        extensions: ['.js', '.jsx'],  // Automatically resolve .js and .jsx
+    },
 };

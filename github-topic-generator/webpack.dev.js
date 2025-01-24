@@ -6,7 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: path.resolve(__dirname, 'dist'), // path for the build
+        path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
     },
     mode: 'development',
@@ -14,14 +14,17 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js|jsx$/,
+                test: /\.(js|jsx)$/,  // Fixed regex for .js and .jsx files
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: [
                             '@babel/preset-env',
-                            ['@babel/preset-react', {"runtime": "automatic"}]
+                            ['@babel/preset-react', { "runtime": "automatic" }]
+                        ],
+                        plugins: [
+                            '@babel/plugin-proposal-private-property-in-object',
                         ],
                     }
                 }
@@ -46,7 +49,7 @@ module.exports = {
     plugins: [ 
         new HtmlWebpackPlugin({
             template: './public/index.html',
-            filename: 'popup.html',
+            filename: 'popup.html',  // Adjust the filename if necessary
         }),
         new CopyPlugin({
             patterns: [
@@ -57,4 +60,7 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
     ],
+    resolve: {
+        extensions: ['.js', '.jsx'],  // Automatically resolve .js and .jsx
+    },
 };
