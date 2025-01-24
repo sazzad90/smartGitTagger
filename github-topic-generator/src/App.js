@@ -43,8 +43,8 @@ const App = () => {
   }, []);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>GitHub README Fetcher</h2>
+<div style={{ padding: '20px', borderRadius: '10px' }}>
+<h2 style={{ color: 'blue', fontFamily: 'Arial, sans-serif' }}>SmartGitTagger</h2>
       <pre>
         {error ? error : readmeContent}
       </pre>
