@@ -16,10 +16,10 @@ const PillButton = styled(Button)({
     },
   });
   
-  const Topic = ({children}) => {
+  const Topic = ({children, clickable}) => {
     return (
       <div style={{ padding: '2px' }}>
-        <PillButton variant="contained">{children}</PillButton>
+        <PillButton variant="contained" disabled={clickable}>{children}</PillButton>
       </div>
     );
   };

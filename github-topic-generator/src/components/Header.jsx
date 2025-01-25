@@ -7,7 +7,7 @@ const Header = () => {
         display: "flex",
         justifyContent: "start",
         color: "white",
-        backgroundColor: "var(--background)",
+        backgroundColor: "var(--theme)",
         height: "8vh",
         fontFamily: "monospace",
         fontSize: "20px",

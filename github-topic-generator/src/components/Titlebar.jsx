@@ -8,11 +8,11 @@ const Titlebar = ({ title, subtitle }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        padding: "6px",
+        padding: "5px",
       }}
     >
-      <Typography sx={{ fontWeight: "540", fontSize: '15px', color: "var(--background)", borderRadius: "10px",
-        boxShadow: "0px 1px 2px var(--hover)", borderColor: "var(--background)", padding:'6px'}}>
+      <Typography sx={{ fontWeight: "540px", fontSize: '13px', color: "var(--theme)", borderRadius: "10px",
+        boxShadow: "0px 1px 2px var(--hover)", borderColor: "var(--theme)", padding:'8px'}}>
         {title}
       </Typography>
       {subtitle && (

@@ -39,7 +39,7 @@ const Navbar = () => {
         <Button
           sx={{
             color: "var(--secondary)",
-            backgroundColor: selectedButton === "topics" ? "#DDDDFA" : "",
+            themeColor: selectedButton === "topics" ? "#DDDDFA" : "",
             textTransform: "none",
             width: "100%",
             fontSize: "15px",
@@ -48,7 +48,7 @@ const Navbar = () => {
             paddingLeft: "4vh",
             paddingRight: "4vh",
             borderBottom:
-              selectedButton === "topics" ? "2px solid var(--background)" : "",
+              selectedButton === "topics" ? "2px solid var(--theme)" : "",
             borderRadius: 0,
           }}
           onClick={() => handleButtonClick("topics")}
@@ -65,7 +65,7 @@ const Navbar = () => {
         <Button
           sx={{
             color: "var(--secondary)",
-            backgroundColor: selectedButton === "analytics" ? "#DDDDFA" : "",
+            themeColor: selectedButton === "analytics" ? "#DDDDFA" : "",
             textTransform: "none",
             width: "100%",
             fontSize: "15px",
@@ -74,7 +74,7 @@ const Navbar = () => {
             paddingLeft: "4vh",
             paddingRight: "4vh",
             borderBottom:
-              selectedButton === "analytics" ? "2px solid var(--background)" : "",
+              selectedButton === "analytics" ? "2px solid var(--theme)" : "",
             borderRadius: 0,
           }}
           onClick={() => handleButtonClick("analytics")}
