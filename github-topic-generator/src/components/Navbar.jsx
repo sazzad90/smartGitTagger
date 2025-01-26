@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"; 
 import { Button } from "@mui/material";
+
 const Navbar = () => {
+  const location = useLocation();
   const [selectedButton, setSelectedButton] = useState("topics");
-  const navigate = useNavigate(); // Ensure this is inside Router context
+  const navigate = useNavigate();
 
-  // On component mount, navigate to the default page ("/")
   useEffect(() => {
-    navigate("/"); // This will make sure Topics is loaded initially
-  }, [navigate]);
+    // This will update the selected button based on the route
+    if (location.pathname === "/") {
+      setSelectedButton("topics");
+    } else if (location.pathname === "/analytics") {
+      setSelectedButton("analytics");
+    }
+  }, [location]);
 
-  // Handle button click
+    useEffect(() => {
+        navigate("/"); 
+    }, []);
+
+    
   const handleButtonClick = (button) => {
     setSelectedButton(button);
     if (button === "topics") {
@@ -30,12 +40,7 @@ const Navbar = () => {
         borderBottom: "0.5px solid var(--secondary)", // Apply bottom border to navbar
       }}
     >
-      <Link
-        to="/"
-        style={{
-          textDecoration: "none",
-        }}
-      >
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Button
           sx={{
             color: "var(--secondary)",
@@ -47,8 +52,7 @@ const Navbar = () => {
             paddingTop: "2vh",
             paddingLeft: "4vh",
             paddingRight: "4vh",
-            borderBottom:
-              selectedButton === "topics" ? "2px solid var(--theme)" : "",
+            borderBottom: selectedButton === "topics" ? "2px solid var(--theme)" : "",
             borderRadius: 0,
           }}
           onClick={() => handleButtonClick("topics")}
@@ -56,12 +60,7 @@ const Navbar = () => {
           Topics
         </Button>
       </Link>
-      <Link
-        to="/analytics"
-        style={{
-          textDecoration: "none",
-        }}
-      >
+      <Link to="/analytics" style={{ textDecoration: "none" }}>
         <Button
           sx={{
             color: "var(--secondary)",
@@ -73,8 +72,7 @@ const Navbar = () => {
             paddingTop: "2vh",
             paddingLeft: "4vh",
             paddingRight: "4vh",
-            borderBottom:
-              selectedButton === "analytics" ? "2px solid var(--theme)" : "",
+            borderBottom: selectedButton === "analytics" ? "2px solid var(--theme)" : "",
             borderRadius: 0,
           }}
           onClick={() => handleButtonClick("analytics")}
@@ -86,4 +84,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

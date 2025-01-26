@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { existingTopicsAtom } from "./state/topicsAtom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Topics from "./application/topics";
 import Analytics from "./application/analytics";
 import { Alert } from "@mui/material";
 import fetchReadmeAndTopics from "./services/fetchGithubData";
+import { generateReportAtom } from "./state/reportAtom";
 
-const App = () => {
+const App = () => {  
   const [readmeContent, setReadmeContent] = useState("");
   const [topics, setTopics] = useRecoilState(existingTopicsAtom);
   const [error, setError] = useState(null);

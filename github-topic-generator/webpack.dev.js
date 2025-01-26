@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -59,8 +60,16 @@ module.exports = {
             ],
         }),
         new MiniCssExtractPlugin(),
+        new NodePolyfillPlugin(),
     ],
     resolve: {
-        extensions: ['.js', '.jsx'],  // Automatically resolve .js and .jsx
+        extensions: ['.js', '.jsx'],
+        modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
+        alias: {
+            '@kurkle/color': path.resolve(__dirname, 'node_modules/@kurkle/color'),
+        },
+        fallback: {
+          //canvas: require.resolve('canvas')
+        },
     },
 };

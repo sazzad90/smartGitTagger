@@ -1,98 +1,116 @@
 import React, { useEffect, useState } from "react";
-import Topic from "../../components/Topic";
-import { useRecoilValue } from "recoil";
-import { existingTopicsAtom } from "../../state/topicsAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  existingTopicsAtom,
+  generatedTopicsAtom,
+} from "../../state/topicsAtom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Titlebar from "../../components/Titlebar";
-import IconButton from "../../components/IconButton";
+import GeneratedTopics from "./GeneratedTopics";
+import {
+  existingTopicLoaderAtom,
+  generatedTopicLoaderAtom,
+} from "../../state/loadersAtom";
+import ExistingTopics from "./ExistingTopics";
+import {
+  isGenerateClickedAtom,
+  isFinishClickedAtom,
+} from "../../state/buttonAtom";
+import GenerateButton from "../../components/GenerateButton";
+import FinishButton from "../../components/FinishButton";
+import { generateReportAtom } from "../../state/reportAtom";
+import Reports from "../reports";
 
 const Topics = () => {
-  const [isGenerateClicked, setGenerateClicked] = useState(false);
   const topics = useRecoilValue(existingTopicsAtom);
-  console.log("topics inside topics: ", topics);
-  const [existingTopicLoader, setExistingTopicLoader] = useState(true);
-  const [generatedTopicLoader, setgeneratedTopicLoader] = useState(false);
-  const [generatedTopics, setGeneratedTopics] = useState([]);
-
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [isGenerateClicked, setGenerateClicked] = useRecoilState(
+    isGenerateClickedAtom
+  );
+  const [isFinishClicked, setFinishClicked] =
+    useRecoilState(isFinishClickedAtom);
+  const [existingTopicLoader, setExistingTopicLoader] = useRecoilState(
+    existingTopicLoaderAtom
+  );
+  const [generatedTopicLoader, setGeneratedTopicLoader] = useRecoilState(
+    generatedTopicLoaderAtom
+  );
+  const [generatedTopics, setGeneratedTopics] =
+    useRecoilState(generatedTopicsAtom);
+    const [isGenerateReport, setGenerateReport] = useRecoilState(
+      generateReportAtom
+    );
   const handleGeneration = () => {
-    console.log('here');
-    
     setGenerateClicked(false);
-    setgeneratedTopicLoader(true);
+    setGeneratedTopicLoader(true);
     setGeneratedTopics([
       "js",
       "css",
       "e-commerce",
       "transformer",
       "machine-learning",
+      "php",
+      "ml",
+      "e-learning",
+      "react",
+      "python",
+      "java"
     ]);
     // code for topic generation
     const timeout = setTimeout(() => {
-      setgeneratedTopicLoader(false);
-    }, 2000);
+      setGeneratedTopicLoader(false);
+      setFinishClicked(true);
+    }, 1500);
     return () => clearTimeout(timeout);
   };
 
+  const handleFinish=()=>{
+    setGenerateReport(true);
+  }
 
   useEffect(() => {
-    // Simulate loading process (could be API call, etc.)
     const timeout = setTimeout(() => {
       setExistingTopicLoader(false);
-      setGenerateClicked(true);
-    }, 2000); // Adjust time as needed
+      if (!isGenerateClicked) setGenerateClicked(true);
+    }, 1500); // Adjust time as needed
 
     return () => clearTimeout(timeout); // Cleanup on unmount
   }, []);
 
   return (
     <>
-    <div style={{display:'flex', flexDirection:'column'}}>
-      <Titlebar title={"Existing Topics"} />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "8px",
-          maxWidth: "100%",
-        }}
-      >
-        {existingTopicLoader ? (
-          <div style={{ paddingTop: "50px" }}>
-            <CircularProgress
-              size={24}
-              sx={{
-                color: "var(--theme)",
-              }}
-            />
-          </div>
-        ) : topics && topics.length > 0 ? (
-          <>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "8px",
-                  maxWidth: "100%",
-                  paddingTop: "5px",
-                  paddingBottom: "15px",
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {isGenerateReport ? <Reports selectedTopics={selectedTopics}/>:
+        <>
+          <Titlebar title={"Existing Topics"} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "8px",
+            maxWidth: "100%",
+          }}
+        >
+          {existingTopicLoader ? (
+            <div style={{ paddingTop: "50px" }}>
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: "var(--theme)",
                 }}
-              >
-                {topics.map((topic, index) => (
-                  <Topic key={index} clickable={false}>
-                    {topic}
-                  </Topic>
-                ))}
-              </div>
+              />
             </div>
-          </>
-        ) : (
-          <p>No existing topics available</p>
-        )}
-      </div>
+          ) : topics && topics.length > 0 ? (
+            <>
+              <ExistingTopics existingTopics={topics} />
+            </>
+          ) : (
+            <p>No existing topics available</p>
+          )}
+        </div>
 
-      {isGenerateClicked ? (
+        {isGenerateClicked && generatedTopics.length === 0 ? (
           <div
             style={{
               display: "flex",
@@ -100,14 +118,18 @@ const Topics = () => {
               marginTop: "4vh",
             }}
           >
-            <IconButton onClick={()=>handleGeneration()} />
+            <GenerateButton onClick={handleGeneration} />
           </div>
         ) : (
           <>
             {generatedTopicLoader ? (
-              <div style={{ paddingTop: "50px",
-              display: "flex",
-              justifyContent: "center", }}>
+              <div
+                style={{
+                  paddingTop: "50px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
                 <CircularProgress
                   size={24}
                   sx={{
@@ -117,31 +139,30 @@ const Topics = () => {
               </div>
             ) : generatedTopics && generatedTopics.length > 0 ? (
               <>
-                    <Titlebar title={"Generated Topics"} />
-
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "8px",
-                      maxWidth: "100%",
-                      paddingTop: "5px",
-                    }}
-                  >
-                    {generatedTopics.map((topic, index) => (
-                      <Topic key={index} clickable={false}>
-                        {topic}
-                      </Topic>
-                    ))}
-                  </div>
-                </div>
+                <Titlebar title={"Generated Topics"} />
+                <GeneratedTopics generatedTopics={generatedTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>
               </>
             ) : (
               <></>
             )}
           </>
         )}
+
+        {isFinishClicked ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "4vh",
+            }}
+          >
+            <FinishButton onClick={handleFinish} />
+          </div>
+        ) : (
+          <></>
+        )}
+        </>
+}
       </div>
     </>
   );
