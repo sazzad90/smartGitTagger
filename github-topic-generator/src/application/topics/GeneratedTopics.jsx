@@ -1,7 +1,11 @@
 import React from 'react'
 import Topic from '../../components/Topic'
+import { useRecoilValue } from 'recoil';
+import { selectedTopicsAtom } from '../../state/topicsAtom';
 
-const GeneratedTopics = ({generatedTopics, selectedTopics, setSelectedTopics}) => {
+const GeneratedTopics = ({generatedTopics, setSelectedTopics}) => {
+  const selectedTopics = useRecoilValue(selectedTopicsAtom);
+  
   const handleSelectedTopic = (topic) => {
     setSelectedTopics((prevTopics) =>
       prevTopics.includes(topic)

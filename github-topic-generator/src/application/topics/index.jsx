@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   existingTopicsAtom,
   generatedTopicsAtom,
+  selectedTopicsAtom,
 } from "../../state/topicsAtom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Titlebar from "../../components/Titlebar";
@@ -23,7 +24,7 @@ import Reports from "../reports";
 
 const Topics = () => {
   const topics = useRecoilValue(existingTopicsAtom);
-  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useRecoilState(selectedTopicsAtom);
   const [isGenerateClicked, setGenerateClicked] = useRecoilState(
     isGenerateClickedAtom
   );
@@ -80,7 +81,7 @@ const Topics = () => {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {isGenerateReport ? <Reports selectedTopics={selectedTopics}/>:
+        {isGenerateReport ? <Reports />:
         <>
           <Titlebar title={"Existing Topics"} />
         <div
@@ -140,7 +141,7 @@ const Topics = () => {
             ) : generatedTopics && generatedTopics.length > 0 ? (
               <>
                 <Titlebar title={"Generated Topics"} />
-                <GeneratedTopics generatedTopics={generatedTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>
+                <GeneratedTopics generatedTopics={generatedTopics} setSelectedTopics={setSelectedTopics}/>
               </>
             ) : (
               <></>

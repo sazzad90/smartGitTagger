@@ -2,14 +2,12 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Card, Box } from "@mui/material";
 
 const ReportTable = ({ data }) => {
-    const matchedTopics = data.selectedTopics.filter((topic) => data.existingTopics.includes(topic));
-    const unmatchedTopics = data.selectedTopics.filter((topic) => !data.existingTopics.includes(topic));
   const rows = [
     { name: "Existing Topics", count: data.existingTopics.length },
     { name: "Generated Topics", count: data.generatedTopics.length },
     { name: "Selected Topics", count: data.selectedTopics.length },
-    { name: "Matched Topics[with existing]", count: matchedTopics.length },
-    { name: "Unmatched Topics[with existing]", count: unmatchedTopics.length },
+    { name: "Matched Topics[with existing]", count: data.matchedTopics.length },
+    { name: "Unmatched Topics[with existing]", count: data.unmatchedTopics.length },
   ];
 
   return (

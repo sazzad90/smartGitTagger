@@ -8,3 +8,17 @@ export const generatedTopicsAtom = atom({
   key: "generatedTopicsAtom",
   default: [], // Initial value for generatedTopics
 });
+export const selectedTopicsAtom = atom({
+  key: "selectedTopicsAtom",
+  default: [], // Initial value for generatedTopics
+});
+
+export const matchedTopicsAtom = atom({
+  key: "matchedTopicsAtom",
+  default: [], // Initial value for generatedTopics
+});
+
+export const unmatchedTopicsAtom = atom({
+  key: "unmatchedTopicsAtom",
+  default: [], // Initial value for generatedTopics
+});
