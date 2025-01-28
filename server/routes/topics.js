@@ -11,7 +11,7 @@ topicsRouter.post('/topic-generation', async (req, res) => {
     
     const response = await axios.post('http://localhost:8000/topic-generation', {test_readme: test_readme});
     console.log('rd: ', response.data);
-        res.status(201).json(response.data);
+    res.status(201).json(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to generate topic' });

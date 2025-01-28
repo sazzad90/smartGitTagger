@@ -23,7 +23,7 @@ import { generateReportAtom } from "../../state/reportAtom";
 import Reports from "../reports";
 import axios from 'axios';
 
-const Topics = () => {
+const Topics = ({readmeContent}) => {
   const topics = useRecoilValue(existingTopicsAtom);
   const [selectedTopics, setSelectedTopics] = useRecoilState(selectedTopicsAtom);
   const [isGenerateClicked, setGenerateClicked] = useRecoilState(
@@ -45,31 +45,23 @@ const Topics = () => {
     
   const handleGeneration = async() => {
     try {
-      const response = await axios.post('http://localhost:5000/api/topics/topic-generation', {test_readme: "test readme data from frontend!"});
-      console.log('at frontend: ', response.data);
+      setGenerateClicked(false);
+      setGeneratedTopicLoader(true);
+
+      const response = await axios.post('http://localhost:5001/api/topics/topic-generation', {test_readme: readmeContent});
+      const parsedObject = JSON.parse(response.data);
+      const generated_topics = parsedObject.generated_topics
+      console.log(generated_topics);
+      console.log('at frontend: ', generated_topics);
+      console.log('Type of response.data:', typeof response.data);
+      
+
+      setGeneratedTopics(generated_topics);
+      setGeneratedTopicLoader(false);
+      setFinishClicked(true);
     } catch (error) {
       console.error(error);
     }
-    setGenerateClicked(false);
-    setGeneratedTopicLoader(true);
-    setGeneratedTopics([
-      "js",
-      "css",
-      "e-commerce",
-      "transformer",
-      "machine-learning",
-      "php",
-      "ml",
-      "e-learning",
-      "react",
-      "python",
-      "java"
-    ]);
-    const timeout = setTimeout(() => {
-      setGeneratedTopicLoader(false);
-      setFinishClicked(true);
-    }, 1500);
-    return () => clearTimeout(timeout);
   };
 
   const handleFinish=()=>{

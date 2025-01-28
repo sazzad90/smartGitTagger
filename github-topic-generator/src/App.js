@@ -40,7 +40,7 @@ const App = () => {
             <Navbar />
             <div style={{ padding: "10px", overflowY: "auto" }}>
               <Routes>
-                <Route path="/" element={<Topics />} />
+                <Route path="/" element={<Topics readmeContent = {readmeContent}/>} />
                 <Route path="/analytics" element={<Analytics />} />
               </Routes>
             </div>
