@@ -1,84 +1,93 @@
-const express = require('express');
-const router = express.Router();
-const { Repository } = require('../models'); // Import Repository model
+import express from 'express';
+import axios from 'axios';
+import { Repositories } from '../models/index.js';  // Import Repositories model
+
+const repositoriesRouter = express.Router();
 
 // GET all repositories
-router.get('/', async (req, res) => {
+repositoriesRouter.get('/', async (req, res) => {
   try {
-    const repositories = await Repository.findAll(); // Retrieve all repositories
-    res.status(200).json({"repositories": "nothing found"});
+    // const repositories = await Repositories.findAll();
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/');
+      res.json(response.data);
+    } catch (error) {
+      console.error('Error calling FastAPI POST:', error);
+      res.status(500).send('Error calling FastAPI server');
+    }
+    res.status(200).json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch repositories' });
   }
 });
 
-// GET a single repository by URL
-router.get('/:url', async (req, res) => {
+// GET a single Repositories by URL
+repositoriesRouter.get('/:url', async (req, res) => {
   try {
-    const repository = await Repository.findOne({
+    const repositories = await Repositories.findOne({
       where: { url: req.params.url },
-    }); // Find repository by URL
-    if (repository) {
-      res.status(200).json(repository);
+    }); // Find Repositories by URL
+    if (repositories) {
+      res.status(200).json(repositories);
     } else {
-      res.status(404).json({ error: 'Repository not found' });
+      res.status(404).json({ error: 'Repositories not found' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch repository' });
+    res.status(500).json({ error: 'Failed to fetch Repositories' });
   }
 });
 
-// POST a new repository
-router.post('/', async (req, res) => {
+// POST a new Repositories
+repositoriesRouter.post('/', async (req, res) => {
   const { url, readme } = req.body;
   try {
-    const newRepository = await Repository.create({
+    const newRepositories = await Repositories.create({
       url,
       readme,
-    }); // Create a new repository record
-    res.status(201).json(newRepository);
+    }); // Create a new Repositories record
+    res.status(201).json(newRepositories);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to create repository' });
+    res.status(500).json({ error: 'Failed to create Repositories' });
   }
 });
 
-// PUT (update) an existing repository
-router.put('/:url', async (req, res) => {
+// PUT (update) an existing Repositories
+repositoriesRouter.put('/:url', async (req, res) => {
   try {
-    const repository = await Repository.findOne({
+    const repositories = await Repositories.findOne({
       where: { url: req.params.url },
     });
-    if (repository) {
-      await repository.update(req.body); // Update the repository
-      res.status(200).json(repository);
+    if (repositories) {
+      await Repositories.update(req.body); // Update the Repositories
+      res.status(200).json(repositories);
     } else {
-      res.status(404).json({ error: 'Repository not found' });
+      res.status(404).json({ error: 'Repositories not found' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to update repository' });
+    res.status(500).json({ error: 'Failed to update Repositories' });
   }
 });
 
-// DELETE a repository by URL
-router.delete('/:url', async (req, res) => {
+// DELETE a Repositories by URL
+repositoriesRouter.delete('/:url', async (req, res) => {
   try {
-    const repository = await Repository.findOne({
+    const repositories = await Repositories.findOne({
       where: { url: req.params.url },
     });
-    if (repository) {
-      await repository.destroy(); // Delete the repository
-      res.status(200).json({ message: 'Repository deleted successfully' });
+    if (repositories) {
+      await Repositories.destroy(); // Delete the Repositories
+      res.status(200).json({ message: 'Repositories deleted successfully' });
     } else {
-      res.status(404).json({ error: 'Repository not found' });
+      res.status(404).json({ error: 'Repositories not found' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to delete repository' });
+    res.status(500).json({ error: 'Failed to delete Repositories' });
   }
 });
 
-module.exports = router;
+export default repositoriesRouter; 

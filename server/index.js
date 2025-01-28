@@ -1,9 +1,12 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { sequelize, Repositories, Topics } = require('./models'); // Import models
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import {sequelize} from './models/index.js';
+import repositoriesRouter from './routes/repositories.js';
+import topicsRouter from './routes/topics.js';
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -12,11 +15,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-const repositoriesRoutes = require('./routes/repositories');
-const topicsRoutes = require('./routes/topics');
+// const repositoriesRouter = require('./routes/repositories');
+// const topicsRouter = require('./routes/topics');
 
-app.use('/api/topics', topicsRoutes);
-app.use('/api/repositories', repositoriesRoutes);
+app.use('/api/topics', topicsRouter);
+app.use('/api/repositories', repositoriesRouter);
 
 // Test Route
 app.get('/', (req, res) => {
@@ -25,7 +28,7 @@ app.get('/', (req, res) => {
 
 // db connection
 sequelize
-  .authenticate()
+.authenticate()
   .then(() => {
     console.log('Connected to the database!');
     // Sync the models with the database

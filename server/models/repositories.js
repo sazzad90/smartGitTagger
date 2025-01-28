@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+import { DataTypes, Model } from 'sequelize';
 
 class Repositories extends Model {
   static initialize(sequelize) {
@@ -11,7 +11,7 @@ class Repositories extends Model {
         },
         url: {
           type: DataTypes.STRING(255),
-          unique: true,
+          // unique: true,
           allowNull: false,
         },
         readme: {
@@ -28,5 +28,4 @@ class Repositories extends Model {
     );
   }
 }
-
-module.exports = Repositories;
+export default Repositories

@@ -1,9 +1,7 @@
-const { Sequelize } = require('sequelize');
-const sequelize = require('../config/database');
+import Repositories from './repositories.js';
+import Topics from './topics.js';
+import sequelize from '../config/database.js'
 
-// Import models
-const Repositories = require('./repositories');
-const Topics = require('./topics');
 
 // Initialize models
 Repositories.initialize(sequelize);
@@ -24,8 +22,4 @@ Topics.belongsTo(Repositories, {
   onUpdate: 'CASCADE',
 });
 
-module.exports = {
-  sequelize,
-  Repositories,
-  Topics,
-};
+export { sequelize, Repositories, Topics };

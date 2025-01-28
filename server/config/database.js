@@ -1,4 +1,6 @@
-const { Sequelize } = require('sequelize');
+import dotenv from 'dotenv';
+dotenv.config();
+import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize(
   process.env.DB_NAME, // Database name
@@ -9,5 +11,4 @@ const sequelize = new Sequelize(
     dialect: 'mysql', // Use 'postgres', 'sqlite', etc., if needed
   }
 );
-
-module.exports = sequelize;
+export default sequelize

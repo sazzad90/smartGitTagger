@@ -1,4 +1,4 @@
-const { Repositories } = require('../models'); // Destructure Repositories from models
+import Repositories from '../models/repositories.js';
 
 async function seedRepositories() {
   try {
@@ -18,5 +18,4 @@ async function seedRepositories() {
     console.error('Error seeding repositories:', error);
   }
 }
-
-module.exports = seedRepositories;
+export default seedRepositories

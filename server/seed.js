@@ -1,6 +1,9 @@
-const models = require('./models'); // Import the entire models object
-const seedRepositories = require('./seed/repositories-seed');
-const seedTopics = require('./seed/topics-seed');
+import dotenv from 'dotenv';
+dotenv.config();
+import * as models from './models/index.js'; // Import the entire models object
+import seedTopics from './seed/topics-seed.js';
+import seedRepositories from './seed/repositories-seed.js';
+
 
 const { sequelize, Repositories, Topics } = models; // Destructure from the models object
 

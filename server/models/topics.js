@@ -1,4 +1,4 @@
-const { DataTypes, Model } = require('sequelize');
+import { DataTypes, Model } from 'sequelize';
 
 class Topics extends Model {
   static initialize(sequelize) {
@@ -27,15 +27,14 @@ class Topics extends Model {
         modelName: 'Topics',
         tableName: 'topics',
         timestamps: true,
-        indexes: [
-          {
-            unique: false,
-            fields: ['repository_url'],
-          },
-        ],
+        // indexes: [
+        //   {
+        //     unique: false,
+        //     fields: ['repository_url'],
+        //   },
+        // ],
       }
     );
   }
 }
-
-module.exports = Topics;
+export default Topics

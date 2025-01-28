@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const { Topic } = require('../models'); // Import Topic model
+import express from 'express';
+import axios from 'axios';
+import { Topics } from '../models/index.js';  // Import Repositories model
+const topicsRouter = express.Router();
 
 // GET all topics
-router.get('/', async (req, res) => {
+topicsRouter.get('/', async (req, res) => {
   try {
-    const topics = await Topic.findAll(); // Retrieve all topics
+    const topics = await Topics.findAll(); // Retrieve all topics
     res.status(200).json(topics);
   } catch (error) {
     console.error(error);
@@ -14,9 +15,9 @@ router.get('/', async (req, res) => {
 });
 
 // GET a single topic by ID
-router.get('/:id', async (req, res) => {
+topicsRouter.get('/:id', async (req, res) => {
   try {
-    const topic = await Topic.findByPk(req.params.id); // Find topic by primary key
+    const topic = await Topics.findByPk(req.params.id); // Find topic by primary key
     if (topic) {
       res.status(200).json(topic);
     } else {
@@ -29,10 +30,10 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST a new topic
-router.post('/', async (req, res) => {
+topicsRouter.post('/', async (req, res) => {
   const { repository_url, existing_tags, selected_tags } = req.body;
   try {
-    const newTopic = await Topic.create({
+    const newTopic = await Topics.create({
       repository_url,
       existing_tags,
       selected_tags,
@@ -45,9 +46,9 @@ router.post('/', async (req, res) => {
 });
 
 // PUT (update) an existing topic
-router.put('/:id', async (req, res) => {
+topicsRouter.put('/:id', async (req, res) => {
   try {
-    const topic = await Topic.findByPk(req.params.id);
+    const topic = await Topics.findByPk(req.params.id);
     if (topic) {
       await topic.update(req.body); // Update the topic
       res.status(200).json(topic);
@@ -61,9 +62,9 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE a topic by ID
-router.delete('/:id', async (req, res) => {
+topicsRouter.delete('/:id', async (req, res) => {
   try {
-    const topic = await Topic.findByPk(req.params.id);
+    const topic = await Topics.findByPk(req.params.id);
     if (topic) {
       await topic.destroy(); // Delete the topic
       res.status(200).json({ message: 'Topic deleted successfully' });
@@ -76,4 +77,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default topicsRouter; 

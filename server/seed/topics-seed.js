@@ -1,4 +1,4 @@
-const { Topics } = require('../models'); // Destructure Topics from models
+import Topics from '../models/repositories.js';
 
 async function seedTopics() {
   try {
@@ -27,4 +27,4 @@ async function seedTopics() {
   }
 }
 
-module.exports = seedTopics;
+export default seedTopics
