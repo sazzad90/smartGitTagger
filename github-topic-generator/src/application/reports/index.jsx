@@ -10,6 +10,7 @@ import {
 import BarChart from "../../components/BarChart";
 import PieChart from "../../components/PieChart";
 import { Box, Divider } from "@mui/material";
+import CloseButton from "../../components/CloseButton";
 
 const Reports = () => {
   const existingTopics = useRecoilValue(existingTopicsAtom);
@@ -27,7 +28,11 @@ const Reports = () => {
     unmatchedTopics,
   };
 
-  useEffect(()=>{
+  const handleClose = () => {
+    window.close(); 
+  };
+
+  useEffect(()=>{    
     setMatchedTopics(selectedTopics.filter((topic) =>
       existingTopics.includes(topic)
     ));
@@ -37,16 +42,19 @@ const Reports = () => {
   },[])
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
       <Titlebar title={"Summary Report"} />
+      <CloseButton onClick={handleClose}/>
+    </div>
       <ReportTable data={tableData} />
-      <Divider sx={{ my: 2 }} /> {/* Divider with vertical margin */}
+      <Divider sx={{ my: 2 }} /> 
       <Box style={{height: '300px'}}>
         <BarChart
           generatedTopicsCount={generatedTopics.length}
           usedTopicsCount={selectedTopics.length}
         />
       </Box>
-      <Divider sx={{ my: 2 }} /> {/* Divider with vertical margin */}
+      <Divider sx={{ my: 2 }} /> 
       <Box style={{height: '300px'}}>
         <PieChart
           matchedTopicsCount={matchedTopics.length}

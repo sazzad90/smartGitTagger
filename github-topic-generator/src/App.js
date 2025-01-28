@@ -17,13 +17,13 @@ const App = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    // let isMounted = true;
+    // if (isMounted) {
       fetchReadmeAndTopics(setReadmeContent, setTopics, setError);
-    }
-    return () => {
-      isMounted = false;
-    };
+    // }
+    // return () => {
+    //   isMounted = false;
+    // };
   }, []);
 
   return (

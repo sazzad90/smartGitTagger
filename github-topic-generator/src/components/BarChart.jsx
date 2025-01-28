@@ -3,11 +3,9 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 
-// Register Chart.js components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const BarChart = ({ generatedTopicsCount, usedTopicsCount }) => {
-  // Data for Bar Chart
   const barData = {
     labels: ["Generated topics", "Selected topics"],
     datasets: [
@@ -21,8 +19,6 @@ const BarChart = ({ generatedTopicsCount, usedTopicsCount }) => {
     ],
   };
 
-
-  // Chart options (Optional)
   const options = {
     responsive: true,
     plugins: {
@@ -34,11 +30,11 @@ const BarChart = ({ generatedTopicsCount, usedTopicsCount }) => {
 
   return (
 <Card sx={{
-    width: "100%", // Takes full width of the parent
-    maxWidth: "450px", // Optional: Limits max width
+    width: "100%", 
+    maxWidth: "450px", 
     maxHeight:'300px',
-    margin: "auto", // Center horizontally
-    justifyContent: "center", // Centers content vertically
+    margin: "auto", 
+    justifyContent: "center", 
   }}>
   <CardContent sx={{ flexGrow: 1 }}> {/* Ensures content grows/shrinks with parent */}
   <Typography variant="h6" gutterBottom>

@@ -7,8 +7,9 @@ const Navbar = () => {
   const [selectedButton, setSelectedButton] = useState("topics");
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
-    // This will update the selected button based on the route
     if (location.pathname === "/") {
       setSelectedButton("topics");
     } else if (location.pathname === "/analytics") {
@@ -16,19 +17,46 @@ const Navbar = () => {
     }
   }, [location]);
 
-    useEffect(() => {
-        navigate("/"); 
-    }, []);
+  // Ensure navigation to "/" on the first render if the path is not "/analytics"
+  useEffect(() => {
+    if (location.pathname !== "/" && location.pathname !== "/analytics") {
+      navigate("/");
+    }
+  }, []);
 
-    
   const handleButtonClick = (button) => {
     setSelectedButton(button);
-    if (button === "topics") {
-      navigate("/"); // Navigate to Topics page
-    } else {
-      navigate("/analytics"); // Navigate to Analytics page
-    }
+    navigate(button === "topics" ? "/" : "/analytics");
   };
+
+
+
+  // useEffect(() => {
+  //   console.log('2');
+    
+  //   // This will update the selected button based on the route
+  //   if (location.pathname === "/") {
+  //     setSelectedButton("topics");
+  //   } else if (location.pathname === "/analytics") {
+  //     setSelectedButton("analytics");
+  //   }
+  // }, [location]);
+
+  //   useEffect(() => {
+  //     console.log(1);
+      
+  //       navigate("/"); 
+  //   }, []);
+
+    
+  // const handleButtonClick = (button) => {
+  //   setSelectedButton(button);
+  //   if (button === "topics") {
+  //     navigate("/"); // Navigate to Topics page
+  //   } else {
+  //     navigate("/analytics"); // Navigate to Analytics page
+  //   }
+  // };
 
   return (
     <div

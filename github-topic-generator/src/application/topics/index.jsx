@@ -57,7 +57,6 @@ const Topics = () => {
       "python",
       "java"
     ]);
-    // code for topic generation
     const timeout = setTimeout(() => {
       setGeneratedTopicLoader(false);
       setFinishClicked(true);
@@ -69,7 +68,7 @@ const Topics = () => {
     setGenerateReport(true);
   }
 
-  useEffect(() => {
+  useEffect(() => {    
     const timeout = setTimeout(() => {
       setExistingTopicLoader(false);
       if (!isGenerateClicked) setGenerateClicked(true);
@@ -155,6 +154,7 @@ const Topics = () => {
               display: "flex",
               justifyContent: "center",
               marginTop: "4vh",
+              marginBottom: "4vh",
             }}
           >
             <FinishButton onClick={handleFinish} />
