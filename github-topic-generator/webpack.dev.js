@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -48,6 +49,9 @@ module.exports = {
         ]
     },
     plugins: [ 
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+          }),
         new HtmlWebpackPlugin({
             template: './public/index.html',
             filename: 'popup.html',  // Adjust the filename if necessary
@@ -63,13 +67,17 @@ module.exports = {
         new NodePolyfillPlugin(),
     ],
     resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.mjs'],
         modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
         alias: {
             '@kurkle/color': path.resolve(__dirname, 'node_modules/@kurkle/color'),
         },
         fallback: {
-          //canvas: require.resolve('canvas')
-        },
+            "fs": false,  // Disable fs module in the browser
+            // "path": require.resolve("path-browserify"),
+            // "stream": require.resolve("stream-browserify"),
+            // "crypto": require.resolve("crypto-browserify"),
+            // "canvas": require.resolve("canvas")
+          }          
     },
 };

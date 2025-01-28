@@ -21,6 +21,7 @@ import GenerateButton from "../../components/GenerateButton";
 import FinishButton from "../../components/FinishButton";
 import { generateReportAtom } from "../../state/reportAtom";
 import Reports from "../reports";
+import axios from 'axios';
 
 const Topics = () => {
   const topics = useRecoilValue(existingTopicsAtom);
@@ -41,7 +42,14 @@ const Topics = () => {
     const [isGenerateReport, setGenerateReport] = useRecoilState(
       generateReportAtom
     );
-  const handleGeneration = () => {
+    
+  const handleGeneration = async() => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/topics/topic-generation', {test_readme: "test readme data from frontend!"});
+      console.log('at frontend: ', response.data);
+    } catch (error) {
+      console.error(error);
+    }
     setGenerateClicked(false);
     setGeneratedTopicLoader(true);
     setGeneratedTopics([

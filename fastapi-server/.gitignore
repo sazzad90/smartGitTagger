@@ -1,0 +1,4 @@
+__pycache__/
+.venv/
+embeddings_with_KNN/
+final_dataset.csv

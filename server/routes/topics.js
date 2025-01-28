@@ -3,6 +3,21 @@ import axios from 'axios';
 import { Topics } from '../models/index.js';  // Import Repositories model
 const topicsRouter = express.Router();
 
+// generate topics
+topicsRouter.post('/topic-generation', async (req, res) => {
+  try {
+    const test_readme = req.body.test_readme;
+    console.log("at backend: ", test_readme);
+    
+    const response = await axios.post('http://localhost:8000/topic-generation', {test_readme: test_readme});
+    console.log('rd: ', response.data);
+        res.status(201).json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to generate topic' });
+  }
+});
+
 // GET all topics
 topicsRouter.get('/', async (req, res) => {
   try {

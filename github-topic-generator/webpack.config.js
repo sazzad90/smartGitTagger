@@ -2,7 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-
+const webpack = require('webpack'); 
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -46,6 +46,9 @@ module.exports = {
         ]
     },
     plugins: [ 
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'] // Polyfill the Buffer global object
+        }),
         new HtmlWebpackPlugin({
             template: './public/index.html',
             filename: 'popup.html',
@@ -61,6 +64,9 @@ module.exports = {
     ],
     
     resolve: {
+        fallback: {
+            "buffer": require.resolve("buffer/") // Resolves to the installed `buffer` module
+        },
         extensions: ['.js', '.jsx'],  // Automatically resolve .js and .jsx
     },
 };

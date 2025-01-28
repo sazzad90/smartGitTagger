@@ -7,10 +7,9 @@ const repositoriesRouter = express.Router();
 // GET all repositories
 repositoriesRouter.get('/', async (req, res) => {
   try {
-    // const repositories = await Repositories.findAll();
     try {
-      const response = await axios.get('http://127.0.0.1:8000/');
-      res.json(response.data);
+      const repositories = await Repositories.findAll();
+      res.status(200).send(repositories);
     } catch (error) {
       console.error('Error calling FastAPI POST:', error);
       res.status(500).send('Error calling FastAPI server');
