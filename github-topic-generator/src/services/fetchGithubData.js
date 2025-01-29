@@ -15,7 +15,7 @@ const fetchReadmeAndTopics = async (setReadmeContent, setURL, setTopics, setErro
           );
           const readmeData = await readmeResponse.json();          
           const readme = readmeData.content
-          if (readme.length > 5) {            
+          if (readme.length > 10) {            
             const decodedContent = atob(readmeData.content);
             setReadmeContent(decodedContent);
             setURL(`https://api.github.com/repos/${owner}/${repo}/readme`);
