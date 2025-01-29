@@ -19,11 +19,11 @@ const Analytics = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px"}}>
-      <Titlebar title={"Popularity"}/>
-      <BarChart generatedTopicsCount={70} usedTopicsCount={55}/>
+      <Titlebar title={"Topics Utilization"}/>
+      <BarChart generatedTopicsCount={72} usedTopicsCount={55}/>
 
-      <Titlebar title={"Accuracy"}/>
-      <PieChart matchedTopicsCount={2000} unmatchedTopicsCount={530}/>
+      <Titlebar title={"Matching Ratio"}/>
+      <PieChart matchedTopicsCount={200} unmatchedTopicsCount={310}/>
     </div>
   );
 };

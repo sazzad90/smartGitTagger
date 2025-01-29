@@ -91,19 +91,7 @@ const Topics = ({ readmeContent, url }) => {
       })
       .catch((err) => console.error("Failed to copy:", err));
   };
-
-  // const copyToClipboard = () => {
-  //   const textToCopy = Array.isArray(selectedTopics) ? selectedTopics.join(", ") : selectedTopics;
-
-  //   navigator.clipboard.writeText(textToCopy)
-  //     .then(() => {
-  //       alert("Copied to clipboard!");
-  //       setClipboardClicked(false);
-  //       setFinishClicked(true);
-  //     })
-  //     .catch((err) => console.error("Failed to copy:", err));
-  // };
-
+  
   const handleFinish = async () => {
     try {
       const response = await axios.post(
