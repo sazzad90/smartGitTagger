@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const FinishButton = ({ onClick , children}) => {
+const ClipboardButton = ({ onClick }) => {
   return (
     <Button
       style={{
@@ -14,18 +14,18 @@ const FinishButton = ({ onClick , children}) => {
       startIcon={<CheckCircleIcon />}
       onClick={onClick}
       sx={{
-        width: '80px',         // Adjust width (example: 100px)
+        width: '138px',         // Adjust width (example: 100px)
         height: '32px',         // Adjust height for button size
         fontSize: '12px',       // Adjust text size (smaller font size)
         fontWeight: '30px',     // Font weight adjustment
-        paddingLeft: '4px',     // Adjust padding for better proportions
-        paddingRight: '4px',    // Adjust padding for better proportions
+        paddingLeft: '2px',     // Adjust padding for better proportions
+        paddingRight: '2px',    // Adjust padding for better proportions
         textTransform: 'none',  // Keep text from being capitalized
       }}
     >
-      Finish
+      Copy to Clipboard
     </Button>
   );
 };
 
-export default FinishButton;
+export default ClipboardButton;

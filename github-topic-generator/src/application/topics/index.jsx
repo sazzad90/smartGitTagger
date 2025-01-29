@@ -16,14 +16,16 @@ import ExistingTopics from "./ExistingTopics";
 import {
   isGenerateClickedAtom,
   isFinishClickedAtom,
+  isClipboardClickedAtom,
 } from "../../state/buttonAtom";
 import GenerateButton from "../../components/GenerateButton";
 import FinishButton from "../../components/FinishButton";
 import { generateReportAtom } from "../../state/reportAtom";
 import Reports from "../reports";
 import axios from 'axios';
+import ClipboardButton from "../../components/ClipboardButton";
 
-const Topics = ({readmeContent}) => {
+const Topics = ({readmeContent, url}) => {  
   const topics = useRecoilValue(existingTopicsAtom);
   const [selectedTopics, setSelectedTopics] = useRecoilState(selectedTopicsAtom);
   const [isGenerateClicked, setGenerateClicked] = useRecoilState(
@@ -43,28 +45,57 @@ const Topics = ({readmeContent}) => {
       generateReportAtom
     );
     
+    const [isClipboardClicked, setClipboardClicked] = useRecoilState(
+      isClipboardClickedAtom
+    );
   const handleGeneration = async() => {
     try {
       setGenerateClicked(false);
       setGeneratedTopicLoader(true);
 
       const response = await axios.post('http://localhost:5001/api/topics/topic-generation', {test_readme: readmeContent});
-      const parsedObject = JSON.parse(response.data);
-      const generated_topics = parsedObject.generated_topics
-      console.log(generated_topics);
-      console.log('at frontend: ', generated_topics);
-      console.log('Type of response.data:', typeof response.data);
+      let generated_topics = response.data.generated_topics;
+      console.log('generated_topics at frontend: ', generated_topics);    
       
+      if (generated_topics.length > 50) {
+        generated_topics = generated_topics.slice(0, 50);
+      }
+      console.log('generated_topics at frontend: ', generated_topics);    
 
       setGeneratedTopics(generated_topics);
       setGeneratedTopicLoader(false);
-      setFinishClicked(true);
+      setClipboardClicked(true);
+      // setFinishClicked(true);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleFinish=()=>{
+  const copyToClipboard = () => {
+    const textToCopy = Array.isArray(selectedTopics) ? selectedTopics.join(", ") : selectedTopics;
+  
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        alert("Copied to clipboard!");
+        setClipboardClicked(false);
+        setFinishClicked(true);
+      })
+      .catch((err) => console.error("Failed to copy:", err));
+  };
+  
+
+  const handleFinish= async()=>{
+    try {
+      const response = await axios.post('http://localhost:5001/api/repositories/', {
+        url: url,
+        readme: readmeContent,
+        existing_topics: topics,
+        selected_Topics: selectedTopics
+      });
+      console.log('database response: ', response.data);
+    } catch (error) {
+      console.error(error);
+    }
     setGenerateReport(true);
   }
 
@@ -103,7 +134,7 @@ const Topics = ({readmeContent}) => {
             </div>
           ) : topics && topics.length > 0 ? (
             <>
-              <ExistingTopics existingTopics={topics} />
+              <ExistingTopics existingTopics={topics} setSelectedTopics={setSelectedTopics}/>
             </>
           ) : (
             <p>No existing topics available</p>
@@ -147,6 +178,25 @@ const Topics = ({readmeContent}) => {
             )}
           </>
         )}
+
+
+{isClipboardClicked ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "4vh",
+              marginBottom: "4vh",
+            }}
+          >
+            <ClipboardButton onClick={copyToClipboard} />
+          </div>
+        ) : (
+          <></>
+        )}
+
+
+
 
         {isFinishClicked ? (
           <div

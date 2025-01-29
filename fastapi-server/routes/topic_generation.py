@@ -81,38 +81,33 @@ def tokenize(text):
 def generate_topics(request: TopicGenerationRequest):
     test_readme = parse_and_filter_markdown(request.test_readme)
     test_encodings = tokenize(test_readme)
-    
     # Load BERT model
     bert_model = TFAutoModel.from_pretrained('bert-base-uncased')
     test_outputs = bert_model(
         input_ids=test_encodings['input_ids'],
         attention_mask=test_encodings['attention_mask']
     )
-
     # Extract embeddings
     test_embeddings = test_outputs.last_hidden_state[:, 0, :].numpy()
     train_embeddings_normalized = normalize(loaded_train_embeddings, axis=1)
     test_embeddings_normalized = normalize(test_embeddings, axis=1)
-
     # Find nearest neighbors
     knn = NearestNeighbors(n_neighbors=4, metric='cosine')
     knn.fit(train_embeddings_normalized)
     distances, indices = knn.kneighbors(test_embeddings_normalized)
+
     # Extract unique topics
     top_matched_topics = df.iloc[indices[0]]['topics']
+
+    print('distances: ', distances[0])
+
     unique_topics = set()
     for idx, distance in enumerate(distances[0]):
+        print('distance: ', distance)
         if distance < 0.09:  
             topics = df.iloc[indices[0][idx]]['topics']  # Get the corresponding topic
-            # print(f"Topic: {topics}, Distance: {distance}")
             quoted_words = re.findall(r"'(.*?)'", topics)
             unique_topics.update(quoted_words)
-    # for idx, topics in top_matched_topics:
-    #     if distances[0][idx] < 0.06303465:
-    #         print('topics inside: ', topics)
-    #         quoted_words = re.findall(r"'(.*?)'", topics)
-    #         unique_topics.update(quoted_words)
-
     unique_topics_list = list(unique_topics)
     print("Unique Topics:", unique_topics_list)
 

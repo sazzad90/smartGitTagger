@@ -40,12 +40,25 @@ repositoriesRouter.get('/:url', async (req, res) => {
 
 // POST a new Repositories
 repositoriesRouter.post('/', async (req, res) => {
-  const { url, readme } = req.body;
+  console.log('rq.body: ', req.body);
+  
+  const { url, readme, existing_topics, selected_topics } = req.body;
+  
   try {
     const newRepositories = await Repositories.create({
-      url,
-      readme,
-    }); // Create a new Repositories record
+      url : url,
+      readme : readme,
+    });
+
+    console.log('newRepositories: ', newRepositories);
+
+    const topicsApiResponse = await axios.post('http://localhost:5001/api/topics/', {
+      url: url,
+      existing_topics: existing_topics,
+      selected_Topics: selected_topics
+    });
+    console.log('topicsApiResponse: ', topicsApiResponse);
+
     res.status(201).json(newRepositories);
   } catch (error) {
     console.error(error);

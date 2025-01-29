@@ -1,7 +1,18 @@
 import React from 'react'
 import Topic from '../../components/Topic'
+import { useRecoilValue } from 'recoil';
+import { selectedTopicsAtom } from '../../state/topicsAtom';
 
-const ExistingTopics = ({existingTopics}) => {
+const ExistingTopics = ({existingTopics, setSelectedTopics}) => {
+    const selectedTopics = useRecoilValue(selectedTopicsAtom);
+  
+    const handleSelectedTopic = (topic) => {
+      setSelectedTopics((prevTopics) =>
+        prevTopics.includes(topic)
+          ? prevTopics.filter((t) => t !== topic) // Deselect if already selected
+          : [...prevTopics, topic] // Add topic if not selected
+      );
+    };
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
     <div
@@ -15,8 +26,13 @@ const ExistingTopics = ({existingTopics}) => {
       }}
     >
       {existingTopics.map((topic, index) => (
-        <Topic key={index} disabled={true}>
-          {topic}
+        <Topic
+        key={index}
+        disabled={false}
+        selected={selectedTopics.includes(topic)} // Pass selected state
+        onClick={() => handleSelectedTopic(topic)} // Handle selection
+      >
+        {topic}
         </Topic>
       ))}
     </div>

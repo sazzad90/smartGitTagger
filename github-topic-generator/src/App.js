@@ -12,18 +12,13 @@ import fetchReadmeAndTopics from "./services/fetchGithubData";
 import { generateReportAtom } from "./state/reportAtom";
 
 const App = () => {  
+  const [url, setURL] = useState("");
   const [readmeContent, setReadmeContent] = useState("");
   const [topics, setTopics] = useRecoilState(existingTopicsAtom);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // let isMounted = true;
-    // if (isMounted) {
-      fetchReadmeAndTopics(setReadmeContent, setTopics, setError);
-    // }
-    // return () => {
-    //   isMounted = false;
-    // };
+      fetchReadmeAndTopics(setReadmeContent, setURL, setTopics, setError);
   }, []);
 
   return (
@@ -40,7 +35,7 @@ const App = () => {
             <Navbar />
             <div style={{ padding: "10px", overflowY: "auto" }}>
               <Routes>
-                <Route path="/" element={<Topics readmeContent = {readmeContent}/>} />
+                <Route path="/" element={<Topics readmeContent = {readmeContent} url={url}/>} />
                 <Route path="/analytics" element={<Analytics />} />
               </Routes>
             </div>

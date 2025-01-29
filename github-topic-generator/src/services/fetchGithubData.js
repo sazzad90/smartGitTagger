@@ -1,4 +1,4 @@
-const fetchReadmeAndTopics = async (setReadmeContent, setTopics, setError) => {
+const fetchReadmeAndTopics = async (setReadmeContent, setURL, setTopics, setError) => {
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const tabUrl = tabs[0]?.url;
   
@@ -13,12 +13,13 @@ const fetchReadmeAndTopics = async (setReadmeContent, setTopics, setError) => {
           const readmeResponse = await fetch(
             `https://api.github.com/repos/${owner}/${repo}/readme`
           );
-          const readmeData = await readmeResponse.json();
-  
-          if (readmeData.content) {
+          const readmeData = await readmeResponse.json();          
+          const readme = readmeData.content
+          if (readme.length > 5) {            
             const decodedContent = atob(readmeData.content);
             setReadmeContent(decodedContent);
-          } else {
+            setURL(`https://api.github.com/repos/${owner}/${repo}/readme`);
+          } else {            
             setReadmeContent("README not found");
           }
   
