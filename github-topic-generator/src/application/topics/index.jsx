@@ -111,8 +111,11 @@ const Topics = ({ readmeContent, url }) => {
   };
 
   useEffect(() => {
+    console.log('here1: ', existingTopicLoader);
     const timeout = setTimeout(() => {
       setExistingTopicLoader(false);
+      console.log('here2: ', existingTopicLoader);
+      
       if (!isGenerateClicked) setGenerateClicked(true);
     }, 1500); // Adjust time as needed
 
@@ -212,7 +215,7 @@ const Topics = ({ readmeContent, url }) => {
             )}
 
             {isClipboardClicked ? (
-              <div
+              <div 
                 style={{
                   display: "flex",
                   justifyContent: "center",

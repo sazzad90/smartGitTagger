@@ -104,7 +104,7 @@ def generate_topics(request: TopicGenerationRequest):
     unique_topics = set()
     for idx, distance in enumerate(distances[0]):
         print('distance: ', distance)
-        if distance < 0.09:  
+        if distance < 0.15:  
             topics = df.iloc[indices[0][idx]]['topics']  # Get the corresponding topic
             quoted_words = re.findall(r"'(.*?)'", topics)
             unique_topics.update(quoted_words)

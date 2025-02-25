@@ -49,6 +49,8 @@ topicsRouter.post("/", async (req, res) => {
   const { url, existing_topics, selected_topics } = req.body;
   const existing_tags = JSON.stringify(existing_topics)
   const selected_tags = JSON.stringify(selected_topics)
+  console.log('selected_tags: ', selected_tags);
+  
 
   try {
     const newTopic = await Topics.create({

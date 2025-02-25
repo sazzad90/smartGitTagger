@@ -1,9 +1,0 @@
-{
-    "manifest_version": 3,
-    "name": "GTG",
-    "version": "1.0",
-    "permissions": ["activeTab", "storage"],
-    "action": {
-      "default_popup": "build/index.html"  
-    }
-  }
